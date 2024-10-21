@@ -10,3 +10,4 @@ typedef struct graph{
 int readGraph(graph*,char*);
 void printAdyGraph(graph*);
 void clearGraph(graph*);
+int grade(graph*, char[3]);

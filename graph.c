@@ -3,8 +3,8 @@
 #include <string.h>
 #include "func.h"
 
-char* buffer;
 graph* grafo;
+char* buffer;
 
 int setEdge(graph* grafo, int U,int V){
     if(grafo == NULL)
@@ -25,7 +25,7 @@ void startGraph(){
     for(int i = 0; i < grafo->V; i++){
 	grafo->ady[i] = malloc(grafo->V * sizeof(int));
 	for (int y = 0; y < grafo->V; y++) {
-	    (grafo->ady[i])[y] = 0;
+	    grafo->ady[i][y] = 0;
 	}
     }
 }
@@ -41,7 +41,14 @@ int readGraph(graph* aux,char* b){
 
 
     char* ptr = strtok(buffer,"\n");
+    if(ptr == NULL)
+	return -1;
     auxArg = malloc((sizeof(char*)*grafo->V)+1);
+
+    // CLEAR
+    for (int i = 1; i < grafo->V+1; i++) {
+	auxArg[i] = NULL;
+    }
 
     int index = 0;
     while(ptr != NULL){
@@ -53,12 +60,19 @@ int readGraph(graph* aux,char* b){
     }
 
     for (int i = 1; i < grafo->V+1; i++) {
+	if(auxArg[i] == NULL)
+	    break;
 	char* ptr2 = strtok(auxArg[i],":");
+
+	if(ptr2 == NULL)
+	    continue;
+
 	int inputV = atoi(ptr2);
 	ptr2 = strtok(NULL,":");
 
 	if(ptr2 == NULL)
-	    break;
+	    continue;
+
 	char* ptrV = strtok(ptr2,",");
 
 	while(ptrV != NULL){
@@ -80,13 +94,13 @@ void printAdyGraph(graph* grafo){
     }
 
     printf("\n\nV   ");
-    for (int c = 0; c < grafo->E; c++) {
+    for (int c = 0; c < grafo->V; c++) {
 	printf("%d ",c+1);
     }
     printf("\n");
     for (int f = 0; f < grafo->V; f++) {
 	printf("\n%d   ",f+1);
-	for (int c = 0; c < grafo->E; c++) {
+	for (int c = 0; c < grafo->V; c++) {
 	    printf("%d ",grafo->ady[f][c]);
 	}
     }
@@ -103,4 +117,28 @@ void clearGraph(graph* grafo){
     free(auxArg);
     free(grafo->ady);
     free(grafo);
+}
+
+int grade(graph* grafo,char type[3]){
+    if(grafo == NULL || grafo->ready == 0 || (strcmp(type,"MAX") != 0 && strcmp(type,"MIN") != 0))
+	return -1;
+
+    int max = 0;
+    int min = grafo->V;
+    for (int v = 0; v < grafo->V; v++) {
+	int aux = 0;
+	for (int a = 0; a < grafo->V; a++) {
+	    aux += grafo->ady[v][a];
+	}
+
+	if(max < aux)
+	    max = aux;
+	if(min > aux)
+	    min = aux;
+    }
+
+    if(strcmp(type,"MAX") == 0)
+	return max;
+    else
+	return min;
 }
