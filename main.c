@@ -24,15 +24,13 @@ int main(void)
     // 3. Grado mínimo y máximo
      
     // 4. Imprimir resultados
-    printf("%d\n",grafo->V);
+    
+    printf("\nLa cantidad de vertices: %d",grafo->V);
+    printf("\nLa cantidad de aristas: %d",grafo->E);
+    printAdyGraph(grafo);
 
     // 5. Liberar memoria
-    for(int i = 0; i < grafo->V; i++){
-
-	free(grafo->ady[i]);
-    }
-    free(grafo->ady);
-    free(grafo);
+    clearGraph(grafo);
 
     return 0;
 }
