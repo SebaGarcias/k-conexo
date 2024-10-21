@@ -7,6 +7,6 @@ typedef struct graph{
 
 }graph;
 
-int readGraph(graph*);
+int readGraph(graph*,char*);
 void printAdyGraph(graph*);
 void clearGraph(graph*);

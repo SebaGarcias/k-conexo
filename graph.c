@@ -3,7 +3,7 @@
 #include <string.h>
 #include "func.h"
 
-char buffer[] = "3\n1: 2,3\n2: 1,3\n3: 1,2";
+char* buffer;
 graph* grafo;
 
 int setEdge(graph* grafo, int U,int V){
@@ -30,7 +30,10 @@ void startGraph(){
     }
 }
 char** auxArg;
-int readGraph(graph* aux){
+int readGraph(graph* aux,char* b){
+    buffer = malloc(strlen(b)+1);
+    strcpy(buffer,b);
+
     grafo = aux;
 
     grafo->V = buffer[0] - '0';
