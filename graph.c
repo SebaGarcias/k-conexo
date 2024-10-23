@@ -10,6 +10,9 @@ int setEdge(graph* grafo, int U,int V){
     if(grafo == NULL)
 	return 1;
 
+    if(grafo->V <= U || grafo->V <=V)
+	return -1;
+
     grafo->ady[U-1][V-1] = 1;
     if(grafo->ady[V-1][U-1] == 0){
 	grafo->E++;
@@ -52,6 +55,9 @@ int readGraph(graph* aux,char* b){
 
     int index = 0;
     while(ptr != NULL){
+	if(index > grafo->V)
+	    break;
+
 	auxArg[index] = malloc(strlen(ptr)+1);
 	strcpy(auxArg[index],ptr);
 	index++;
