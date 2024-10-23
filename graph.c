@@ -43,10 +43,10 @@ int readGraph(graph* aux,char* b){
     char* ptr = strtok(buffer,"\n");
     if(ptr == NULL)
 	return -1;
-    auxArg = malloc((sizeof(char*)*grafo->V)+1);
+    auxArg = malloc(sizeof(char*)*(grafo->V+1));
 
     // CLEAR
-    for (int i = 1; i < grafo->V+1; i++) {
+    for (int i = 0; i < grafo->V +1; i++) {
 	auxArg[i] = NULL;
     }
 
@@ -83,6 +83,11 @@ int readGraph(graph* aux,char* b){
     }
 
     grafo->ready = 1;
+    for (int i = 0; i < grafo->V+1; i++) {
+	free(auxArg[i]);
+    }
+    free(auxArg);
+    free(buffer);
 
     return 0;
 }
@@ -104,17 +109,13 @@ void printAdyGraph(graph* grafo){
 	    printf("%d ",grafo->ady[f][c]);
 	}
     }
+    printf("\n");
 }
 
 void clearGraph(graph* grafo){
     for(int i = 0; i < grafo->V; i++){
-	free(auxArg[i]);
-	if(i == grafo->V - 1)
-	    free(auxArg[i+1]);
-
 	free(grafo->ady[i]);
     }
-    free(auxArg);
     free(grafo->ady);
     free(grafo);
 }
