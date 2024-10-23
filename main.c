@@ -5,7 +5,6 @@
 
 int main(void)
 {
-
     // 0. Importar formato 
     char* input = importFormat();
     printf("%s\n",input);
