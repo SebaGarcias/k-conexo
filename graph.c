@@ -10,7 +10,7 @@ int setEdge(graph* grafo, int U,int V){
     if(grafo == NULL)
 	return 1;
 
-    if(grafo->V <= U || grafo->V <=V)
+    if(grafo->V < U || grafo->V <V)
 	return -1;
 
     grafo->ady[U-1][V-1] = 1;
