@@ -27,11 +27,14 @@ void startGraph(){
     grafo->ady = malloc(grafo->V * sizeof(int *));
     for(int i = 0; i < grafo->V; i++){
 	grafo->ady[i] = malloc(grafo->V * sizeof(int));
+
 	for (int y = 0; y < grafo->V; y++) {
 	    grafo->ady[i][y] = 0;
 	}
     }
+
 }
+
 char** auxArg;
 int readGraph(graph* aux,char* b){
     buffer = malloc(strlen(b)+1);

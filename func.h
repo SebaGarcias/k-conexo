@@ -1,4 +1,10 @@
+typedef struct dot{
+    int vertice;
+    int eliminado;
+}dot;
+
 typedef struct graph{
+    dot* v;
     int ready;
 
     int V; // Cantidad de vértices
@@ -10,6 +16,8 @@ typedef struct graph{
 int readGraph(graph*,char*);
 void printAdyGraph(graph*);
 void clearGraph(graph*);
-int kconexo(graph*,int);
+int iskconexo(graph*,int);
+int kalgoritmo(graph*);
 int conexo(graph*);
 int grade(graph*, char[3]);
+void clearResults(graph*);
