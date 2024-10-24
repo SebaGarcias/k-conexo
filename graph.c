@@ -10,7 +10,7 @@ int setEdge(graph* grafo, int U,int V){
     if(grafo == NULL)
 	return 1;
 
-    if(grafo->V < U || grafo->V <V)
+    if(grafo->V < U || grafo->V <V || U == 0 || V == 0)
 	return -1;
 
     grafo->ady[U-1][V-1] = 1;
@@ -39,13 +39,12 @@ int readGraph(graph* aux,char* b){
 
     grafo = aux;
 
-    grafo->V = buffer[0] - '0';
-    startGraph();
-
-
     char* ptr = strtok(buffer,"\n");
     if(ptr == NULL)
 	return -1;
+
+    grafo->V = atoi(ptr);
+    startGraph();
     auxArg = malloc(sizeof(char*)*(grafo->V+1));
 
     // CLEAR
@@ -104,16 +103,17 @@ void printAdyGraph(graph* grafo){
 	return;
     }
 
-    printf("\n\nV   ");
+    printf("\n\n ");
     for (int c = 0; c < grafo->V; c++) {
 	printf("%d ",c+1);
     }
     printf("\n");
     for (int f = 0; f < grafo->V; f++) {
-	printf("\n%d   ",f+1);
+	printf("\n ");
 	for (int c = 0; c < grafo->V; c++) {
 	    printf("%d ",grafo->ady[f][c]);
 	}
+	printf(" %d",f+1);
     }
     printf("\n");
 }
