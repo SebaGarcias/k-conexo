@@ -2,9 +2,13 @@
 #include <stdlib.h>
 #include "func.h"
 #include "importFile.h"
+#include <time.h>
 
 int main(void)
 {
+    // Iniciar el temporizador
+    clock_t start_time = clock();
+
     // 0. Importar formato 
     char* input = importFormat();
 
@@ -68,6 +72,13 @@ int main(void)
 	printf("\nEl grafo NO es 4-conexo\n");
 
     printf("\n");
+
+    // Finalizar el temporizador
+    clock_t end_time = clock();
+
+    // Calcular el tiempo transcurrido
+    double elapsed_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+    printf("Tiempo transcurrido: %.2f segundos\n", elapsed_time);
 
     // 5. Liberar memoria
     clearResults(grafo);
