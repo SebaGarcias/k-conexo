@@ -58,6 +58,8 @@ int iskconexo(graph* grafo,int k){
     switch (k) {
     	case 2:
 	    for (int x = 0; x < grafo->V; x++) {
+		if(r[x][x][x] == -1)
+		    continue;
 		if(r[x][x][x] == 0)
 		    return 0;
 	    }
@@ -65,7 +67,9 @@ int iskconexo(graph* grafo,int k){
     	case 3:
 	    for (int x = 0; x < grafo->V; x++) {
 		for (int y= 0; y < grafo->V; y++) {
-		    if(r[x][x][y] == 0)
+		    if(y == x || r[x][y][y] == -1)
+			continue;
+		    if(r[x][y][y] == 0)
 			return 0;
 		}
 	    }
@@ -74,9 +78,11 @@ int iskconexo(graph* grafo,int k){
 	    for (int x = 0; x < grafo->V; x++) {
 		for (int y= 0; y < grafo->V; y++) {
 		    for (int z = 0; z < grafo->V; z++) {
+			if(x == y || y == z || z == x || r[x][y][z] == -1)
+			    continue;
 			if(r[x][y][z] == 0)
 			    return 0;
-			}
+		    }
 		}
 	    }
     		break;
