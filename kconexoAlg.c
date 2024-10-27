@@ -96,7 +96,7 @@ int kalgoritmo(graph* grafo){
 	for (int y = 0; y < grafo->V; y++) {
 	    r[x][y] = malloc(grafo->V * sizeof(int));
 	    for (int z = 0; z < grafo->V; z++) {
-		r[x][y][z] = 0;
+		r[x][y][z] = -1;
 	    }
 	}
     }
