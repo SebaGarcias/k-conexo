@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "func.h"
+#include "conjuntos.h"
 
 graph* deleteV(graph* grafo, int x, int y, int z){
     graph* aux = malloc(sizeof(graph));
@@ -85,25 +86,37 @@ int iskconexo(graph* grafo,int k){
 }
 
 int kalgoritmo(graph* grafo){
+    int* conjVertices = conjunto(grafo->V);
+    int** subConjVert = subconjuntoOrdenM(conjVertices,grafo->V,3);
 
-    // (V x V x V x V) -> {1,0} Es conexo o no, sin estos vertices
+    // Conjunto que contiene los subconjuntos hasta tamaño 3 -> {1,0} Es conexo o no, sin estos vertices
     r = malloc(grafo->V * sizeof(int**));
     for (int x = 0; x < grafo->V; x++) {
 	r[x] = malloc(grafo->V * sizeof(int*));
 	for (int y = 0; y < grafo->V; y++) {
 	    r[x][y] = malloc(grafo->V * sizeof(int));
 	    for (int z = 0; z < grafo->V; z++) {
-		r[x][y][z] = 0;
-		graph* gmod = deleteV(grafo,x,y,z);
-		r[x][y][z] = conexo(gmod);
-		for (int i = 0; i < gmod->V; i++) {
-		    free(gmod->ady[i]);
-		}
-		free(gmod->ady);
-		free(gmod);
+		r[x][y][z] = -1;
 	    }
 	}
     }
+
+    int cantSubConj = subConjVert[0][0];
+    for (int i = 1; i < cantSubConj; i++) {
+	int v1 = subConjVert[i][0]-1;
+	int v2 = subConjVert[i][1]-1;
+	int v3 = subConjVert[i][2]-1;
+
+	graph* gmod = deleteV(grafo,v1,v2,v3);
+	r[v1][v2][v3] = conexo(gmod);
+	for (int i = 0; i < gmod->V; i++) {
+	    free(gmod->ady[i]);
+	}
+	free(gmod->ady);
+	free(gmod);
+    }
+    clearSubconjunto(subConjVert);
+    free(conjVertices);
 }
 
 void clearResults(graph* grafo){
