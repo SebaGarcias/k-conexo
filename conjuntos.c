@@ -53,7 +53,8 @@ int** subconjuntoOrdenM(int* conjunto, int n,int m){
 	    continue;
 	}
 
-	result[i-offset+1] = malloc(sizeof(int)*m);
+	// El último valor, corresponde al estado de los vertices seleccionados 
+	result[i-offset+1] = malloc(sizeof(int)*(m+1));
 	for (int t = 0; t < m; t++) {
 	    if(temp[t] == -1)
 		temp[t] = temp[t-1];

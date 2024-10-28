@@ -43,10 +43,11 @@ graph* deleteV(graph* grafo, int x, int y, int z){
     free(aux->v);
     return aux;
 }
-int*** r;
+
+int** resultadoKConexidad;
 // 1 Es k-conexo | 0 no es kconexo | -1 es un fallo
 int iskconexo(graph* grafo,int k){
-    if(r == NULL)
+    if(resultadoKConexidad == NULL)
 	return -1;
 
     if(k >= grafo->V)
@@ -55,38 +56,30 @@ int iskconexo(graph* grafo,int k){
     if(k == 1)
 	return conexo(grafo);
 
-    switch (k) {
-    	case 2:
-	    for (int x = 0; x < grafo->V; x++) {
-		if(r[x][x][x] == -1)
-		    continue;
-		if(r[x][x][x] == 0)
-		    return 0;
-	    }
-    		break;
-    	case 3:
-	    for (int x = 0; x < grafo->V; x++) {
-		for (int y= 0; y < grafo->V; y++) {
-		    if(y == x || r[x][y][y] == -1)
-			continue;
-		    if(r[x][y][y] == 0)
+    int totalSubC = resultadoKConexidad[0][0];
+    for (int s = 1; s < totalSubC; s++) {
+	int v1 = resultadoKConexidad[s][0];
+	int v2 = resultadoKConexidad[s][1];
+	int v3 = resultadoKConexidad[s][2];
+	int estado = resultadoKConexidad[s][3];
+
+	if(estado == -1)
+	    continue;
+
+	switch (k) {
+		case 2:
+		    if(v1 == v2 && v2 == v3 && estado == 0)
 			return 0;
-		}
-	    }
-    		break;
-    	case 4:
-	    for (int x = 0; x < grafo->V; x++) {
-		for (int y= 0; y < grafo->V; y++) {
-		    for (int z = 0; z < grafo->V; z++) {
-			if(x == y || y == z || z == x || r[x][y][z] == -1)
-			    continue;
-			if(r[x][y][z] == 0)
-			    return 0;
-		    }
-		}
-	    }
-    		break;
-    		
+			break;
+		case 3:
+		    if(v1 != v2 && v2 == v3 && estado == 0)
+			return 0;
+			break;
+		case 4:
+		    if(v1 != v2 && v2 != v3 && v1 != v3 && estado == 0)
+			return 0;
+			break;
+	}
     }
     return 1;
 }
@@ -95,44 +88,29 @@ int kalgoritmo(graph* grafo){
     int* conjVertices = conjunto(grafo->V);
     int** subConjVert = subconjuntoOrdenM(conjVertices,grafo->V,3);
 
-    // Conjunto que contiene los subconjuntos hasta tamaño 3 -> {1,0} Es conexo o no, sin estos vertices
-    r = malloc(grafo->V * sizeof(int**));
-    for (int x = 0; x < grafo->V; x++) {
-	r[x] = malloc(grafo->V * sizeof(int*));
-	for (int y = 0; y < grafo->V; y++) {
-	    r[x][y] = malloc(grafo->V * sizeof(int));
-	    for (int z = 0; z < grafo->V; z++) {
-		r[x][y][z] = -1;
-	    }
-	}
-    }
-
+    // Conjunto que contiene los subconjuntos hasta tamaño 3 -> {-1,0,1} Es conexo o no, sin estos vertices |-1 si no fue asignado su estado
     int cantSubConj = subConjVert[0][0];
     for (int i = 1; i < cantSubConj; i++) {
 	int v1 = subConjVert[i][0]-1;
 	int v2 = subConjVert[i][1]-1;
 	int v3 = subConjVert[i][2]-1;
+	// Representa el estado de esos vértices
+	subConjVert[i][3] = -1;
 
 	graph* gmod = deleteV(grafo,v1,v2,v3);
-	r[v1][v2][v3] = conexo(gmod);
+	subConjVert[i][3] = conexo(gmod);
 	for (int i = 0; i < gmod->V; i++) {
 	    free(gmod->ady[i]);
 	}
 	free(gmod->ady);
 	free(gmod);
     }
-    clearSubconjunto(subConjVert);
     free(conjVertices);
+    resultadoKConexidad = subConjVert;
 }
 
-void clearResults(graph* grafo){
-    for (int x = 0; x < grafo->V; x++) {
-	for (int y = 0; y < grafo->V; y++) {
-	    free(r[x][y]);
-	}
-	free(r[x]);
-    }
-    free(r);
+void clearResults(){
+    clearSubconjunto(resultadoKConexidad);
 }
 
 

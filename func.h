@@ -20,4 +20,4 @@ int iskconexo(graph*,int);
 int kalgoritmo(graph*);
 int conexo(graph*);
 int grade(graph*, char[3]);
-void clearResults(graph*);
+void clearResults();

@@ -81,7 +81,7 @@ int main(void)
     printf("Tiempo transcurrido: %.2f segundos\n", elapsed_time);
 
     // 5. Liberar memoria
-    clearResults(grafo);
+    clearResults();
     clearGraph(grafo);
     clearFormat();
 
