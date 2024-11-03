@@ -91,10 +91,13 @@ int main(void)
 		    double elapsed_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
 		    printf("\nTiempo transcurrido: %.2f segundos\n", elapsed_time);
 		}
-		if(k != -1)
-		    printf("\nEl grafo es %d-Conexo!\n",k);
-		else
-		    printf("\nEl grafo no tiene k-conexidad para k e {1,2,3,4}\n");
+
+		for(int i = k; i >= 1;i--){
+		    if(k != -1)
+			printf("\nEl grafo es %d-Conexo!\n",i);
+		    else
+			printf("\nEl grafo no tiene k-conexidad para k e {1,2,3,4}\n");
+		}
 	    	break;
 	    case 5:
 		printAdyGraph(grafo);
